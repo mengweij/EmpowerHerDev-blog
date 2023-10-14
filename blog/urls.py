@@ -8,4 +8,6 @@ urlpatterns = [
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
     #pk在Django项目中常常用，但是你可以使用你想要的变量（记住：使用小写以及_而不是空格！）
     #注意在升级后的Django URL路由系统中，不再使用正则表达式，而是使用类似<int:pk>这样的路径参数
+    path('post/new/', views.post_new, name='post_new'),
+    path('post/<int:pk>/edit', views.post_edit, name='post_edit')
 ]
