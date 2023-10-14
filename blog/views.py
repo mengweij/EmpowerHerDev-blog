@@ -19,7 +19,6 @@ def post_new(request):
         if form.is_valid(): #所有field都有正确输入
             post = form.save(commit=False) #大部分情况不设置commit=F,就会自动保存，这里是为了先获取author&date两个信息
             post.author = request.user
-            post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     #如果是首次访问new post页面，只展示页面（并未发生POST）
@@ -34,9 +33,23 @@ def post_edit(request, pk):
         if form.is_valid(): 
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+def post_draft_list(request):
+    #仅获取没有发布日期这一属性的post（在new和edit方法中都设置了post是默认没有发布日期的）
+    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+    return render(request, 'blog/post_draft_list.html', {'posts': posts})
+
+def post_publish(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.publish() #这是在model中自定义的方法
+    return redirect('post_detail', pk=pk)
+
+def post_remove(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('post_list')
