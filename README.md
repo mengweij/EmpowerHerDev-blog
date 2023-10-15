@@ -1,1 +1,1 @@
-# djangogirls-blog
+# EmpowerHerDev blog
