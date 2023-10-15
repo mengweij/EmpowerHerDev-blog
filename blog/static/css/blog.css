@@ -1,5 +1,5 @@
 .page-header {
-    background-color: #ff9400;
+    background-color: #40271E;
     margin-top: 0;
     padding: 20px 20px 20px 40px;
 }
@@ -15,12 +15,12 @@
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Lobster', cursive;
+    font-family: 'Fredericka the Great', serif;
 }
 
 .date {
     float: right;
-    color: #828282;
+    color: #734E38;
 }
 
 .save {
@@ -32,6 +32,7 @@ h1, h2, h3, h4 {
 }
 
 .top-menu, .top-menu:hover, .top-menu:visited {
+    font-family:'Courier New', Courier, monospace;
     color: #ffffff;
     float: right;
     font-size: 15pt;
@@ -48,4 +49,9 @@ h1, h2, h3, h4 {
 
 .comment {
     margin: 20px 0px 20px 20px;
+}
+
+a, a:hover {
+    color:#734E38;
+    text-decoration: none;
 }
