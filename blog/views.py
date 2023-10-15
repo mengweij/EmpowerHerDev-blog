@@ -4,10 +4,8 @@ from .models import Post, Comment
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
-#post_list方法接受 request 参数作为输入， 并 return （返回）用 render 方法渲染模板 blog/post_list.html
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    #返回request, template地址，{}中则是template需要的东西
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
@@ -18,12 +16,12 @@ def post_detail(request, pk):
 def post_new(request):
     if request.method == 'POST':
         form = PostForm(request.POST)    
-        if form.is_valid(): #所有field都有正确输入
-            post = form.save(commit=False) #大部分情况不设置commit=F,就会自动保存，这里是为了先获取author&date两个信息
+        if form.is_valid(): 
+            post = form.save(commit=False) 
             post.author = request.user
             post.save()
             return redirect('post_detail', pk=post.pk)
-    #如果是首次访问new post页面，只展示页面（并未发生POST）
+
     else: 
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
@@ -32,7 +30,7 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post) #通过实例来传递当前编辑博文    
+        form = PostForm(request.POST, instance=post)   
         if form.is_valid(): 
             post = form.save(commit=False)
             post.author = request.user
@@ -44,14 +42,13 @@ def post_edit(request, pk):
 
 @login_required
 def post_draft_list(request):
-    #仅获取没有发布日期这一属性的post（在new和edit方法中都设置了post是默认没有发布日期的）
     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
 @login_required
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.publish() #这是在model中自定义的方法
+    post.publish()
     return redirect('post_detail', pk=pk)
 
 @login_required
