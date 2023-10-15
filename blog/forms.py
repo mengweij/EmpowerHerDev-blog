@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post
+from .models import Post, Comment
 
 class PostForm(forms.ModelForm):
 
@@ -9,3 +9,10 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'text',)
         # 只设置两个字段
         # author应该是当前登录的人（你！）然后created_date应该是我们创建文章时自动分配的  
+
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ('author', 'text',)
